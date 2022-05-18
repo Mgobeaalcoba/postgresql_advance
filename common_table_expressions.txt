@@ -1,0 +1,26 @@
+Utilizar PostgreSQL CTE (expresiones de tabla comunes) para simplificar consultas complejas.
+
+Introducción a las expresiones de tabla comunes de PostgreSQL o CTE
+Una expresión de tabla común es un conjunto de resultados temporal que se puede hacer referencia en otro comando SQL incluyendo SELECT, INSERT, UPDATEo DELETE.
+
+Las expresiones de tabla comunes son temporales en el sentido de que solo existen durante la ejecución de la consulta.
+
+A continuación, se muestra la sintaxis de la creación de un CTE:
+
+WITH cte_name (column_list) AS (
+CTE_query_definition
+)
+statement;
+En esta sintaxis:
+
+Primero, especifique el nombre del CTE seguido de una lista de columnas opcional.
+En segundo lugar, dentro del cuerpo de la WITHcláusula, especifique una consulta que devuelva un conjunto de resultados. Si no especifica explícitamente la lista de columnas después del nombre de CTE, la lista de selección de CTE_query_definitionse convertirá en la lista de columnas de CTE.
+En tercer lugar, utilizar el CTE como una tabla o vista en la statementque puede ser una SELECT, INSERT, UPDATE, o DELETE.
+Las expresiones de tabla comunes o CTE se utilizan normalmente para simplificar uniones y subconsultas complejas en PostgreSQL.
+
+eJ: 
+WITH RECURSIVE tabla_recursiva(n) AS (
+	VALUES(1)
+	UNION ALL
+	SELECT n+1 FROM tabla_recursiva WHERE n < 100
+) SELECT AVG(n) FROM tabla_recursiva;

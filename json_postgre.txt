@@ -1,0 +1,56 @@
+Una caracteristica muy importante de PostgreSQL es su capacidad de trabajar con estructuras JSON.
+
+JSON Texto plano - Es unicamente un string de texto.
+JSON Binary - Es más rápido de procesar ya que se guarda como un archivo binario.
+El uso de objetos nos dará más flexibilidad en el trabajo.
+
+Para crear una tabla donde almacenar JSON: 
+
+CREATE TABLE ordenes (
+	ID serial NOT NULL PRIMARY KEY,
+	info json NOT NULL
+);
+
+Para insertar objetos JSON en mi tabla creada: 
+
+INSERT INTO ordenes (info)
+VALUES
+   (
+      '{ "cliente": "David Sanchez", "items": {"producto": "Biberón","cantidad": 24}}'
+   ),
+   (
+      '{ "cliente": "Edna Cardenas", "items": {"producto": "Carro de juguete","cantidad": 1}}'
+   ),
+   (
+      '{ "cliente": "Israel Vazquez", "items": {"producto": "Tren de juguete","cantidad": 2}}'
+   );
+
+   Para consultar finalmente los valores de las llaves: 
+
+SELECT
+   info -> 'cliente' AS cliente  -- Extraigo solo cliente con esta sintaxis
+FROM
+   ordenes;
+
+SELECT
+   info ->> 'cliente' AS cliente -- Lo extraigo con formato texto. En el anterior era con formato json
+FROM
+   ordenes
+WHERE
+   info -> 'items' ->> 'producto' = 'Biberón'  
+
+Para poder encontrar una variable numerica o trabajar con ellas en una columna tipo json primero debo castearlas como integer o float
+
+Ej:
+
+SELECT MIN (CAST(info -> 'items' ->> 'cantidad' AS INTEGER))
+FROM ordenes;
+
+SELECT MAX (CAST(info -> 'items' ->> 'cantidad' AS INTEGER)) AS maxima_cantidad,
+MIN (CAST(info -> 'items' ->> 'cantidad' AS INTEGER)) AS minima_cantidad,
+AVG (CAST(info -> 'items' ->> 'cantidad' AS INTEGER)) AS promedio_cantidad,
+SUM (CAST(info -> 'items' ->> 'cantidad' AS INTEGER)) AS suma_total
+FROM ordenes;
+
+Hacer calculos sobre objetos, como los tipo JSON implica un consumo de memoria elevado por lo que no es recomendable salvo que no haya alternativa.
+Combiene incluso usar JSONB que es un objeto binario mas facil de manejar por PostgreSQL

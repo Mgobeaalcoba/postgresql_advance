@@ -1,0 +1,2 @@
+Las window function se ocupan para entender la relación que guarda un registro en particular con respecto al resto del dataset, ya sea una tabla, una partición o un query.
+Generalmente se encargan de hacer rankings

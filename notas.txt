@@ -1,0 +1,131 @@
+-- Historia de las bases de datos relacionales --
+
+Originalmente las bases de datos se utilizaban de manera texto, es decir, que se guardaban los datos de manera plana, en archivos de texto ‘.txt’. El problema era que al momento de sacarlos, leerlos y hacer cosas interesantes con los datos se complicaba.
+
+En ese contexto nacen las bases de datos relacionales fueron un esfuerzo, incluido matemático, para hacer la conjunción de datos y mantenerlos estables, de forma que no solo pudiéramos guardar, sino también extraer y hacer cosas ingeniosas con los datos, como cálculos estadísticos. Ejemplos de estas bases de datos serían: SQLServer, Oracle, PostgreSQL, MariaDB, MySQL.
+
+Las bases de datos relacionales históricamente son una navaja Suiza, son la herramienta que arregla en general todos los casos de datos y te permite hacer sistemas muy robustos con una sola herramienta.
+
+Por otro lado empezó un problema histórico a inicio de los años 2000, en el que teníamos web 2.0, bases de datos gigantes y redes sociales. Fue un gran torrente de datos incrementándose día a día. Para esto se crearon ciencias para manejo de grandes cantidades de datos, como BIG DATA. En respuesta a esto se crearon nuevas bases de datos que fueron específicas para manejar ciertos casos de datos.
+
+Las Bases de Datos No Relacionales no son solo un tipo son diferentes. Algunas basadas en documentos, otras basadas en grafos, otras son columnares, algunas se las guarda en memoria.
+
+Las bases de datos no relacionales no con como las relacionales, son herramientas específicas para ciertos tipos de trabajo como: mantener el estado de la aplicación (base de datos basado en documentos), si se quiere hacer analítica de datos se requiere un datawarehouse (algo basado en grafos), si se quiere tener algo con relaciones muy complejas entre entidades se recomienda las bases de datos basadas en grafos. Dependiendo el caso de uso se utiliza una herramienta diferente.
+
+Las bases de datos relacionales también evolucionaron con el paso del tiempo, se han acoplado nuevas funcionalidades, como él implementó de funciones, nuevos esquemas de trabajo y varias funcionalidades nuevas para mantenerse vivas en el mundo del manejo de datos.
+
+-- Puntos fuertes de las RDB (Relational Data Bases) --
+
+Multipropósito - Te permite almacenar, extraer, estados de anidación y nos permite jugar con las bases de datos
+Ampliamente utilizadas - Sin importar en el campo que entres en el campo de datos, se van a econtrar con bases de datos relacionales
+Información consistente - La idea en una base de datos relacional que si se tiene data en la base sea datos unicos y relacionarla con otra información.
+Flexible - Se puede ocupar solo para almacenar datos, extraerlos o jugar con datos
+Retrocompatible - Los motores de base de datos avanzan constantemente en sus motores pero siempre arreglando los problemas de sus estandares
+Completamente programable - Permite usar lenguajes procedurales que pueden ayudar a extraer datos o guardarlos e incluso hacer cosas más complejos dentro de la misma base de datos
+
+-- Conceptos importantes de las bases de datos relacionales --
+
+Entidades / Tablas
+Se traducen en cosas de la vida real, por ejemplo, un reloj es una entidad, una taza, una fruta, cualquier conjunto de objetos que representen en la vida real, y esas entidades tiene algo en particular, los atributos.
+Atributos
+Una manzana tiene por ejemplo un color, una semilla, un sabor, un tamaño, tienen diferentes propiedades que se traducen en atributos.
+Relaciones
+Son la manera en la que se unen una entidad con otra. Por ejemplo, cuantas manecillas tiene un reloj, uno puede tener 3, otro puede tener 4, podemos guardar en una tabla las manecillas, y en otra tabla el reloj. Y de esta manera queda relacionada la información, pero sin repetir datos.’
+Normalmente en el ámbito relacional, se traduce en partir la relación en una tabla llamada transitiva, que se encarga en relacionar cual es la manecilla que se une con cual reloj, donde puedes relacionar muchos a muchos.
+Stored Procedures o FUNCIONES
+Son funciones que nos permiten almacenar el manejador de BD, que nos permite ejecutar de manera de loop.
+Triggers o FUNCIONES que generan nueva data
+Son otro tipo de funciones, que nos permite unir los stored procedures con un evento, por ejemplo, si añades un registro a una tabla, si cambias uno o borras uno, puedes indicar que antes, durante o después, juntar una serie de instrucciones almacenadas en un stored procedures.
+
+-- ¿Que es la ciencia de datos? --
+
+Un científico de datos entiende el negocio y sus necesidades para traducirlo a los demás equipos de datos. El cientifico de datos es el líder de un equipo de datos. Su trabajo da impacto a la organización
+
+Otros integrantes de un equipo de datos: 
+DBAs
+Analistas
+Ingenieros
+
+En muchas organizaciones va a haber una única persona que se encargue de todo el proceso de datos
+
+Contar historias con los datos
+Las habilidades siempre van a ser necesarias en cualquier organización
+
+-- Aplicación de la ciencia de datos --
+
+En una organización la parte a la que más va a ayudar la ciencia de datos es a la toma de decisiones.
+
+Data Driven: Consiste en tomar decisiones basadas en los datos. Es labor del DS brindar estos datos y sus representaciones.
+Información significativa. Entender de que manera podemos aprovechar los datos para decir que cosa y cómo la vamos a presentar
+
+Representación de los datos: Es importante presentar de forma visual los datos dependiendo del problema y el publico al que va dirigida esta presentación.
+
+Neutralidad de datos: Hay ocasiones en la que los datos escogidos generan situaciones fuertes de discriminación a la hora de usarlos en modelos de AI, esto es conocido como Machine Bias.
+
+Storytelling con datos: Es importante ser capaz de comunicar resultados para poder generar un impacto dentro de la organización.
+
+-- Equipos orientados a datos --
+
+DBA (Dabta Base Administrator) Mantener y administrar el motor de base de datos
+
+Data Warehouse (Almacén de datos). Guardar datos pensando a futuro para poder trabajarse.
+Al tener un buen Data Warehouse no necesitas tener luego Data Mining.
+
+ETL/ Data Pipelines Llevar datos de un lado a otro
+
+BI (Business Intelligence) Precursores del DataScience, empezar a extraer datos y entender los datos y sus repercusiones, encontrar patrones
+
+Data Science Entender a la organización e impactarla de forma positiva
+
+ML (Machine Learning) Técnica para clasificar información o realizar predicciones con datos historicos
+
+-- Data science vs. Machine Learning --
+
+ML es un conjunto de ciencias, estrategias, disciplinas y algoritmos que nos van ayudar a tomar la capacidad de computo de las maquinas para resolver problemas de clasificación, de forma que se haga de forma automática, otro punto es realizar predicciones con base a patrones para generar tendencias acorde al comportamiento historico para predecir el futuro
+
+Data Science Conoce a la organización y empresa a detalle para poder hacer algo al respecto. Toma todas las variables de la organización y herramientas disponibles para causar el mejor impacto
+
+ML Es una herramienta más que complementa al Data Science y a la organización
+
+-- Diferencias entre otros manejadores y PostgreSQL --
+
+Código libre y orientado a la comunidad
+Base de datos adaptada y madura, soporta JSON y funciones estadísticas
+PL/pgSQL (Procedural Language/PostgreSQL)
+Manejo de objetos
+Particiones en las tablas mediante estrategias
+Common table expressions tratamiento de tablas virtuales, más eficiente en tiempo de ejecusión
+Window functions trata de encontrar relaciones entre un registro y el resto de registros
+
+-- Superpoderes de PostgreSQL --
+
+PLpgSQL es un lenguaje procedural que complementa el lenguaje standard SQL.
+Otorgando superpoderes que otras bases de datos no tienen.
+Permite crear funciones y triggers para encapsular y reusar sentencias de manera simple.
+Permite realizar programación estructurada como otros lenguajes de programación.
+Realiza calculos complejos y lo hace de manera nativa con los datos que contiene.
+Permite al usuario definir listas, diccionarios e incluso usar tipos complejos como JSON.
+
+-- Stored Procedures --
+
+Funciones → Son más avanzadas. Regresan tipos de datos. Tienen más flexibilidad. No son estándar de SQL, se tiene que usar el lenguaje PLPGSQL.
+Procedures → Integran lógica a la sentencias SQL. Se han ido incluyendo en el estándar SQL. No regresan ningún valor.
+
+Trigger -> es una función que va a ejecutarse cuando una situación particular suceda.
+
+Tipos de Datos Personalizados
+
+Podemos crear un tipo de dato "x" para setear valores permitidos al insertar nuevos valores. 
+
+Ej: 
+CREATE TYPE humor AS ENUM ('triste', 'normal', 'feliz');
+
+CREATE TABLE persona_prueba (
+    nombre text,
+    humor_actual humor
+);
+
+INSERT INTO persona_prueba VALUES ('Pablo', 'molesto'); -- No me va a permitir insertarlo
+INSERT INTO persona_prueba VALUES ('Pablo', 'feliz'); -- Me va a permitir insertarlo
+
+SELECT * FROM persona_prueba;

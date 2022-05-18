@@ -1,0 +1,167 @@
+Vamos a aplicar la mayoria de las funciones que hemos visto hasta acá. 
+
+1° Ejercicio: Top 10
+Cuales son las 10 peliculas que se han rentado mas
+
+1° versión: 
+
+SELECT
+	peliculas.pelicula_id AS id,
+	peliculas.titulo,
+	COUNT(*) AS numero_rentas
+FROM rentas
+	INNER JOIN inventarios ON rentas.inventario_id = inventarios.inventario_id
+	INNER JOIN peliculas ON inventarios.pelicula_id = peliculas.pelicula_id
+GROUP BY peliculas.pelicula_id;
+
+2° Versión (Ordenada):
+
+SELECT
+	peliculas.pelicula_id AS id,
+	peliculas.titulo,
+	COUNT(*) AS numero_rentas
+FROM rentas
+	INNER JOIN inventarios ON rentas.inventario_id = inventarios.inventario_id
+	INNER JOIN peliculas ON inventarios.pelicula_id = peliculas.pelicula_id
+GROUP BY peliculas.pelicula_id
+ORDER BY numero_rentas DESC;
+
+3° versión (Top 10):
+
+SELECT
+	peliculas.pelicula_id AS id,
+	peliculas.titulo,
+	COUNT(*) AS numero_rentas
+FROM rentas
+	INNER JOIN inventarios ON rentas.inventario_id = inventarios.inventario_id
+	INNER JOIN peliculas ON inventarios.pelicula_id = peliculas.pelicula_id
+GROUP BY peliculas.pelicula_id
+ORDER BY numero_rentas DESC
+LIMIT 10;
+
+4° Versión (Top 10 con numeros de orden):
+Incorpora Window Functions
+
+SELECT
+	peliculas.pelicula_id AS id,
+	peliculas.titulo,
+	COUNT(*) AS numero_rentas,
+	ROW_NUMBER () OVER (
+		ORDER BY COUNT(*) DESC
+	) AS lugar
+FROM rentas
+	INNER JOIN inventarios ON rentas.inventario_id = inventarios.inventario_id
+	INNER JOIN peliculas ON inventarios.pelicula_id = peliculas.pelicula_id
+GROUP BY peliculas.pelicula_id
+ORDER BY numero_rentas DESC
+LIMIT 10;
+
+2° Ejercicio: Actualizacion de precios.
+Päsar el precio en dolares americanos a pesos mexicanos
+
+Importante: Si en el from selecciono mas de una tabla sin usar un join SQL por defecto realiza el producto cartesiano entre ambas tablas. Es decir todos por todos. 
+
+Con esta query podría ver el precio de mis peliculas en mexicanos: 
+
+SELECT	peliculas.pelicula_id,
+		tipos_cambio.tipo_cambio_id,
+		tipos_cambio.cambio_usd * peliculas.precio_renta AS precio_mxn
+FROM	peliculas,
+ 		tipos_cambio
+WHERE 	tipos_cambio.codigo = 'MXN';
+
+Si quiero registar el valor en mexicanos frente a cada Actualizacion de precios que haga en dolares o inserción debo crear la siguiente trigger function desde el menú visual con boton derecho con el siguiente codigo: 
+
+-- update_precio_tipo_cambio
+BEGIN
+	INSERT INTO precio_peliculas_tipo_cambio (
+		pelicula_id,
+		tipo_cambio_id,
+		precio_tipo_cambio,
+		ultima_actualizacion
+	)
+	SELECT	NEW.pelicula_id,
+		tipos_cambio.tipo_cambio_id,
+		tipos_cambio.cambio_usd * NEW.precio_renta AS precio_tipo_cambio,
+		CURRENT_TIMESTAMP
+	FROM tipos_cambio
+	WHERE 	tipos_cambio.codigo = 'MXN';
+	RETURN NEW;
+END
+
+Luego debo crear el trigger que indique que esa función se debe ejecutar cada vez que lleve adelante un cambio o un insert en determinada tabla: 
+
+CREATE TRIGGER trigger_update_tipos_cambio
+    AFTER INSERT OR UPDATE
+    ON public.peliculas
+    FOR EACH ROW
+    EXECUTE PROCEDURE public.update_precio_tipo_cambio();
+
+3° Ejercicio: Usando rank y percent rank
+
+-- Ranking en porcentajes
+SELECT
+	peliculas.pelicula_id AS id,
+	peliculas.titulo,
+	COUNT(*) AS numero_rentas,
+	PERCENT_RANK () OVER (
+		ORDER BY COUNT(*) ASC
+   	) AS lugar
+FROM	rentas
+	INNER JOIN inventarios ON rentas.inventario_id = inventarios.inventario_id
+	INNER JOIN peliculas ON inventarios.pelicula_id = peliculas.pelicula_id
+GROUP BY peliculas.pelicula_id
+ORDER BY numero_rentas DESC;
+
+-- Ranking con nmumeros repetidos si valen lo mismo. 
+SELECT
+	peliculas.pelicula_id AS id,
+	peliculas.titulo,
+	COUNT(*) AS numero_rentas,
+	DENSE_RANK () OVER (
+		ORDER BY COUNT(*) DESC
+   	) AS lugar
+FROM	rentas
+	INNER JOIN inventarios ON rentas.inventario_id = inventarios.inventario_id
+	INNER JOIN peliculas ON inventarios.pelicula_id = peliculas.pelicula_id
+GROUP BY peliculas.pelicula_id
+ORDER BY numero_rentas DESC;
+
+4° Ejercicio: Ordenando datos geograficos
+
+Agrupado de ciudades por id y nombre con cantidad de rentas que realizó cada una:
+
+SELECT	ciudades.ciudad_id,
+		ciudades.ciudad,
+		COUNT(*) AS rentas_por_ciudad
+FROM	ciudades
+	INNER JOIN direcciones ON ciudades.ciudad_id = direcciones.ciudad_id
+	INNER JOIN tiendas ON tiendas.direccion_id = direcciones.direccion_id
+	INNER JOIN inventarios ON inventarios.tienda_id = tiendas.tienda_id
+	INNER JOIN rentas ON inventarios.inventario_id = rentas.inventario_id
+GROUP BY	ciudades.ciudad_id;
+
+5° Ejercicio: Datos en el tiempo. 
+
+
+--Cantidad de veces que fue alquilada una pelicula en un mes y año especifico
+SELECT	date_part('year', rentas.fecha_renta) AS anio,
+		date_part('month', rentas.fecha_renta) AS mes,
+		peliculas.titulo,
+		count(*) AS numero_rentas
+FROM	rentas
+	INNER JOIN	inventarios ON rentas.inventario_id = inventarios.inventario_id
+	INNER JOIN	peliculas ON peliculas.pelicula_id	= inventarios.pelicula_id
+GROUP BY anio, mes, peliculas.pelicula_id;
+
+-- Cantidad de alquileres que hubieron en un mes y año en especifico ordenado por año y mes respectivamente de forma ascendente
+SELECT	date_part('year', rentas.fecha_renta) AS anio,
+		date_part('month', rentas.fecha_renta) AS mes,
+		count(*) AS numero_rentas
+FROM	rentas
+GROUP BY anio, mes
+ORDER BY anio, mes;
+
+
+
+
